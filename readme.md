@@ -47,7 +47,7 @@ vapoursynth-arm是基于开源项目vapoursynth开发的，旨在**将vapoursynt
 <font color=red>开始前，在终端运行一下命令：</font>
 
 ```shell
-export PATH=/home/A/toolchain/android_toolchain/bin:%PATH
+export PATH=/home/A/toolchain/android_toolchain/bin:$PATH
 ```
 
 ### 3.1 zimg
