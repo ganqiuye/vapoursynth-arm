@@ -1,4 +1,10 @@
 AUTOMAKE_OPTIONS=foreign
+warning_flags = -Wall -Wextra -Wno-unused-parameter -Wshadow
+common_cflags = -O2 $(MFLAGS) $(STACKREALIGN) $(warning_flags)
+AM_CFLAGS = -std=c99 $(common_cflags)
+AM_CXXFLAGS = -std=c++11 $(common_cflags)
+AM_CPPFLAGS = $(VapourSynth_CFLAGS)
+
 bin_PROGRAMS = testva
 
 testva_SOURCES =  ./src/main.cpp \
@@ -14,14 +20,10 @@ testva_SOURCES =  ./src/main.cpp \
                   ./src/nnedi3Wrapper.cpp \
                   ./src/textWrapper.cpp
 
-testva_CXXFLAGS = -O3 -g -fPIC -fPIE
+LOCAL_INCLUDE = -I./inc
 
-LOCAL_INCLUDE = -I./inc \
-        -I./platform/android/vapoursynth/include/vapoursynth
+testva_CXXFLAGS = -fPIC -fPIE $(LOCAL_INCLUDE)
 
-testva_LDFLAGS =
+testva_LDFLAGS = -no-undefined -avoid-version $(PLUGINLDFLAGS)
 
-testva_CXXFLAGS += $(LOCAL_INCLUDE)
-
-LOCAL_LIB = -L./platform/android/vapoursynth/lib -lvapoursynth
-testva_LDFLAGS += $(LOCAL_LIB)
+testva_LDADD = $(VapourSynth_LIBS)
