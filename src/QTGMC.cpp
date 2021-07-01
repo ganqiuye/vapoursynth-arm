@@ -1,11 +1,30 @@
 /*================================================================
-*
-*   File:		QTGMC.cpp
-*   Author:		Gan Qiuye(ganqiuye@163.com)
-*   Date:		2021-05-12  13:37
-*   Version:		1.0
-*   Description:
-*
+MIT License
+
+Copyright (c) 2021 ganqiuye
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+   File:		QTGMC.cpp
+   Author:		Gan Qiuye(ganqiuye@163.com)
+   Date:		2021-05-12  13:37
+   Version:		1.0
+   Description:
 ================================================================*/
 
 #include "QTGMC.h"
@@ -19,14 +38,14 @@
 template<typename ... Args>
 static std::string str_format(const std::string &format, Args ... args)
 {
-    auto size_buf = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1; 
+    auto size_buf = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1;
     std::unique_ptr<char[]> buf(new(std::nothrow) char[size_buf]);
 
     if (!buf)
         return std::string("");
 
     std::snprintf(buf.get(), size_buf, format.c_str(), args ...);
-    return std::string(buf.get(), buf.get() + size_buf - 1); 
+    return std::string(buf.get(), buf.get() + size_buf - 1);
 }
 
 QTGMC::QTGMC(const VSAPI* vsapi, VSCore *core, VSNodeRef* node, QtgmsArgs* args)
@@ -160,11 +179,11 @@ VSNodeRef* MiniQTGMC::QTGMC_KeepOnlyBobShimmerFixes(VSNodeRef* input, VSNodeRef*
     int ed = Rep<10 ? Rep:floor(Rep / 10);
     int od = Rep<10 ? 0 : Rep%10;
     std::vector<int> tmp;
-    VSNodeRef* diff = std->makeDiff(Ref, input, tmp);   
+    VSNodeRef* diff = std->makeDiff(Ref, input, tmp);
    // Areas of positive difference                                 ed = 0 1 2 3 4 5 6 7
- 
+
     std::vector<int> coordinates{0, 1, 0, 0, 0, 0, 1, 0};
-    VSNodeRef* choke1 = std->minimum(diff, planes, coordinates); //      x x x x x x x x    1 pixel   
+    VSNodeRef* choke1 = std->minimum(diff, planes, coordinates); //      x x x x x x x x    1 pixel
 
     if(ed > 2)
     {
@@ -172,25 +191,25 @@ VSNodeRef* MiniQTGMC::QTGMC_KeepOnlyBobShimmerFixes(VSNodeRef* input, VSNodeRef*
     }
     if(ed > 5)
     {
-        choke1 = std->minimum(choke1, planes, coordinates);  //      . . . . . . x x    1 pixel  
+        choke1 = std->minimum(choke1, planes, coordinates);  //      . . . . . . x x    1 pixel
     }
     if(ed % 3 != 0)
     {
         choke1 = std->deflate(choke1, planes);               //      . x x . x x . x    A bit more deflate & some horizonal effect
     }
-    if(ed >= 2 && ed <= 5) 
+    if(ed >= 2 && ed <= 5)
     {
         choke1 = std->median(choke1, planes);               //      . . x . . x . .    Local median
     }
-    choke1 = std->maximum(choke1, planes, coordinates);     //      x x x x x x x x    1 pixel  
+    choke1 = std->maximum(choke1, planes, coordinates);     //      x x x x x x x x    1 pixel
     if(ed > 1)
     {
         choke1 = std->maximum(choke1, planes, coordinates); //      . . x x x x x x    1 pixel    Reflate again
     }
     if(ed > 4)
     {
-        choke1 = std->maximum(choke1, planes, coordinates); //     . . . . . x x x     1 pixel 
-    } 
+        choke1 = std->maximum(choke1, planes, coordinates); //     . . . . . x x x     1 pixel
+    }
 
     // Over-dilation - extra reflation up to about 1 pixel
     if(od == 1)
@@ -275,18 +294,18 @@ VSNodeRef* MiniQTGMC::QTGMC_KeepOnlyBobShimmerFixes(VSNodeRef* input, VSNodeRef*
     return out;
 }
 
-VSNodeRef* MiniQTGMC::Resize(VSNodeRef* src, int w, int h, 
-                      std::vector<double> sx, std::vector<double> sy, 
-                      std::vector<double> sw, std::vector<double> sh, 
+VSNodeRef* MiniQTGMC::Resize(VSNodeRef* src, int w, int h,
+                      std::vector<double> sx, std::vector<double> sy,
+                      std::vector<double> sw, std::vector<double> sh,
                       std::string kernel,
                       std::vector<double> a1, std::vector<double> a2,
                       int dmode,
                       std::vector<int64_t> invks,  std::vector<int64_t> invkstaps,
-                      std::vector<int> planes, std::vector<int64_t> taps, 
-                      bool noring, std::string css, std::vector<int64_t> center, 
+                      std::vector<int> planes, std::vector<int64_t> taps,
+                      bool noring, std::string css, std::vector<int64_t> center,
                       std::string cplace, std::string cplaces, std::string cplaced,
                       int interlaced, int interlacedd, int tff, int tffd, int flt,
-                      int bits, int fulls, int fulld, int ampo, int ampn, 
+                      int bits, int fulls, int fulld, int ampo, int ampn,
                       int dyn, int staticnoise, int patsize)
 {
     const VSVideoInfo *vi = vsapi->getVideoInfo(src);
@@ -451,7 +470,7 @@ VSNodeRef* MiniQTGMC::process(bool showSettings)
 {
     VSNodeRef* out;
     std::vector<int> planes;
-    VSNodeRef *edi = nnedi3->nnedi3(input, /*field=*/3, planes, /*dh=*/false, /*nsize=*/mArgs.NNSize, 
+    VSNodeRef *edi = nnedi3->nnedi3(input, /*field=*/3, planes, /*dh=*/false, /*nsize=*/mArgs.NNSize,
                                     /*nns=*/mArgs.NNeurons, /*qual=*/1, /*etype*/0, /*pscrn*/0);
     VSNodeRef* bobbed = Bob(input, 0, 0.5, true);
     std::vector<int> CMplanes{0, 1, 2};
@@ -469,9 +488,9 @@ VSNodeRef* MiniQTGMC::process(bool showSettings)
     VSNodeRef* repair0 = QTGMC_KeepOnlyBobShimmerFixes(binomial0, bobbed, mArgs.Rep0, true);
 
     std::vector<float> matrix{1, 2, 1, 2, 4, 2, 1, 2, 1};
-    VSNodeRef* spatialBlur = Resize(std->convolution(repair0, matrix, CMplanes), w, h, 
-                                   /*sx*/std::vector<double>(), /*sy*/std::vector<double>(), 
-                                   /*sw*/std::vector<double>{w + epsilon}, /*sh*/std::vector<double>{h + epsilon}, 
+    VSNodeRef* spatialBlur = Resize(std->convolution(repair0, matrix, CMplanes), w, h,
+                                   /*sx*/std::vector<double>(), /*sy*/std::vector<double>(),
+                                   /*sw*/std::vector<double>{w + epsilon}, /*sh*/std::vector<double>{h + epsilon},
                                    /*kernel*/"gauss", /*a1*/std::vector<double>{2}, std::vector<double>()/*a2*/, /*dmode=*/1);
 
     std::vector<float> tmpWeights3{0.1, 0.0};
@@ -492,7 +511,7 @@ VSNodeRef* MiniQTGMC::process(bool showSettings)
 
     VSNodeRef* tmpNode = DitherLumaRebuild(srchClip, 1);
     VSNodeRef* srchSuper = mv->super(tmpNode, /*pel*/2, /*sharp*/2,/*hpad*/hpad, /*vpad*/vpad, /*chroma*/true);
-    analyseData ad = 
+    analyseData ad =
     {
         .blksize     = mArgs.BlockSize,
         .overlap     = mArgs.Overlap,
@@ -545,7 +564,7 @@ VSNodeRef* MiniQTGMC::process(bool showSettings)
                     mArgs.ThSAD2, mArgs.ThSCD1, mArgs.ThSCD2, mArgs.SourceMatch, mArgs.MatchPreset.c_str(), mArgs.MatchEdi.c_str(),
                     mArgs.MatchPreset2.c_str(), mArgs.MatchEdi2.c_str(), mArgs.MatchTR2, mArgs.MatchEnhance, mArgs.Lossless, mArgs.NoiseProcess, mArgs.Denoiser.c_str(),
                     mArgs.FftThreads, mArgs.DenoiseMC, mArgs.NoiseTR, mArgs.Sigma,
-                    mArgs.ChromaNoise, mArgs.ShowNoise, mArgs.GrainRestore, mArgs.NoiseRestore, mArgs.NoiseDeint.c_str(), mArgs.StabilizeNoise, 
+                    mArgs.ChromaNoise, mArgs.ShowNoise, mArgs.GrainRestore, mArgs.NoiseRestore, mArgs.NoiseDeint.c_str(), mArgs.StabilizeNoise,
                     mArgs.InputType, mArgs.ProgSADMask, mArgs.FPSDivisor, mArgs.ShutterBlur,
                     mArgs.ShutterAngleSrc, mArgs.ShutterAngleOut, mArgs.SBlurLimit, mArgs.Border, mArgs.Precise, mArgs.Preset.c_str(), mArgs.Tuning.c_str());
 

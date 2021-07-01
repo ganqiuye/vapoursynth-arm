@@ -1,11 +1,30 @@
 /*================================================================
-*
-*   File:		QTGMC.h
-*   Author:		Gan Qiuye(ganqiuye@163.com)
-*   Date:		2021-05-12  13:37
-*   Version:		1.0
-*   Description:
-*
+MIT License
+
+Copyright (c) 2021 ganqiuye
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+   File:		QTGMC.h
+   Author:		Gan Qiuye(ganqiuye@163.com)
+   Date:		2021-05-12  13:37
+   Version:		1.0
+   Description:
 ================================================================*/
 
 #include "VapourSynth.h"
@@ -185,15 +204,15 @@ private:
     VSNodeRef* Bob(VSNodeRef* clip, double b = 1/3, double c = 1/3, bool tff = true);
     VSNodeRef* SCDetect(VSNodeRef* clip, double threshold = -1);
     VSNodeRef* QTGMC_KeepOnlyBobShimmerFixes(VSNodeRef* input, VSNodeRef* Ref, int Rep = 1, bool Chroma = true);
-    VSNodeRef* Resize(VSNodeRef* src, int w, int h, std::vector<double> sx = std::vector<double>(), std::vector<double> sy = std::vector<double>(), 
-                      std::vector<double> sw = std::vector<double>(), std::vector<double> sh = std::vector<double>(), 
+    VSNodeRef* Resize(VSNodeRef* src, int w, int h, std::vector<double> sx = std::vector<double>(), std::vector<double> sy = std::vector<double>(),
+                      std::vector<double> sw = std::vector<double>(), std::vector<double> sh = std::vector<double>(),
                       std::string kernel="", std::vector<double> a1= std::vector<double>(), std::vector<double> a2= std::vector<double>(),
                       int dmode = NONE, std::vector<int64_t> invks = std::vector<int64_t>(), std::vector<int64_t> invkstaps = std::vector<int64_t>(),
-                      std::vector<int> planes = std::vector<int>(), std::vector<int64_t> taps = std::vector<int64_t>(), 
-                      bool noring = false, std::string css ="", std::vector<int64_t> center = std::vector<int64_t>(), 
-                      std::string cplace = "", std::string cplaces = "", std::string cplaced = "", int interlaced = NONE, 
+                      std::vector<int> planes = std::vector<int>(), std::vector<int64_t> taps = std::vector<int64_t>(),
+                      bool noring = false, std::string css ="", std::vector<int64_t> center = std::vector<int64_t>(),
+                      std::string cplace = "", std::string cplaces = "", std::string cplaced = "", int interlaced = NONE,
                       int interlacedd = NONE, int tff = NONE, int tffd = NONE, int flt = NONE,
-                      int bits = NONE, int fulls = NONE, int fulld = NONE, int ampo = NONE, int ampn = NONE, 
+                      int bits = NONE, int fulls = NONE, int fulld = NONE, int ampo = NONE, int ampn = NONE,
                       int dyn = NONE, int staticnoise = NONE, int patsize = NONE);
     VSNodeRef* DitherLumaRebuild(VSNodeRef *src, double s0 = 2.0, double c = 0.0625, bool chroma = true);
 
